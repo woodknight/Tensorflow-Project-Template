@@ -1,0 +1,16 @@
+{
+  "exp_name": "mnist",
+
+  "image_height": 28,
+  "image_width": 28,
+  "num_classes": 10,
+
+  "batch_size": 32,
+  "num_epochs": 10,
+  "learning_rate": 0.001,
+
+  "max_to_keep": 2,
+
+  "data_loader": "Cifar100DataLoaderNumpy",
+  "data_numpy_pkl": "/media/kokomind/New Volume1/data/cifar/cifar-100-python/data_numpy.pkl"
+}

@@ -12,5 +12,5 @@
   "max_to_keep": 2,
 
   "data_loader": "Cifar100DataLoaderNumpy",
-  "data_numpy_pkl": "/media/kokomind/New Volume1/data/cifar/cifar-100-python/data_numpy.pkl"
+  "data_numpy_pkl": "./cifar-100-python/data_numpy.pkl"
 }
