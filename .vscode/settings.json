@@ -1,0 +1,7 @@
+{
+    "python.pythonPath": "/home/jiang/anaconda3/envs/tensorflow/bin/python",
+    "python.jediEnabled": false,
+    "files.exclude": {
+        "**/imgs": true
+    }
+}

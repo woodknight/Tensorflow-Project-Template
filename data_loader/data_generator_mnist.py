@@ -99,6 +99,12 @@ class MnistImgLoader:
         self.train_labels = np.load(config.datapath + config.y_train)
         self.test_labels = np.load(config.datapath + config.y_test)
 
+        self.train_len = len(self.train_labels)
+        self.test_len = len(self.test_labels)
+
+        self.num_iterations_train = (self.train_len + self.config.batch_size - 1) // self.config.batch_size
+        self.num_iterations_test = (self.test_len + self.config.batch_size - 1) // self.config.batch_size
+
         self.imgs = tf.convert_to_tensor(self.train_imgs_filenames, dtype=tf.string)
 
         self.dataset = tf.data.Dataset.from_tensor_slices((self.imgs, self.train_labels))

@@ -27,7 +27,7 @@ class MnistTrainer(BaseTrain):
         super(MnistTrainer, self).__init__(sess, model, config, logger, data_loader)
 
         # load the model from the latest checkpoint
-        self.model.load(self.sess)
+        # self.model.load(self.sess)
 
         # Summarizer
         self.summarizer = logger

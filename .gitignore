@@ -108,8 +108,6 @@ data/cifar-100-python/
 # pycharm
 .idea/
 
-.vscode/
-
 cifar-100-python/
 
 data/mnist/
