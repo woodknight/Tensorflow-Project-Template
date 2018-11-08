@@ -43,6 +43,8 @@ def save_tfrecord_to_disk(path, arr_x, arr_y):
             writer.write(example.SerializeToString())
 
 
+datapath = './data/mnist/'
+
 def main():
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
@@ -62,10 +64,10 @@ def main():
     print(y_test.shape)
     print(y_test.dtype)
 
-    if not os.path.exists('./data/mnist/imgs/train/'):
-        os.makedirs('./data/mnist/imgs/train/')
-    if not os.path.exists('./data/mnist/imgs/test/'):
-        os.makedirs('./data/mnist/imgs/test/')
+    if not os.path.exists(datapath + 'imgs/train/'):
+        os.makedirs(datapath + 'imgs/train/')
+    if not os.path.exists(datapath + 'imgs/test/'):
+        os.makedirs(datapath + 'imgs/test/')
 
     x_train_filenames = []
     x_test_filenames = []
@@ -74,27 +76,27 @@ def main():
     for i in range(x_test_len):
         x_test_filenames.append(str(i) + '.png')
 
-    # Save the filename of x_train and y_train
-    with open('data/mnist/x_train_filenames.pkl', 'wb') as f:
+    # Save the filename of x_train and y_train to pickle file
+    with open(datapath + 'x_train_filenames.pkl', 'wb') as f:
         pickle.dump(x_train_filenames, f)
-    with open('data/mnist/x_test_filenames.pkl', 'wb') as f:
+    with open(datapath + 'x_test_filenames.pkl', 'wb') as f:
         pickle.dump(x_test_filenames, f)
 
     print("FILENAMES OF IMGS saved successfully")
 
     print("Saving the imgs to the disk..")
 
-    save_imgs_to_disk('./data/mnist/imgs/train/', x_train, x_train_filenames)
-    save_imgs_to_disk('./data/mnist/imgs/test/', x_test, x_test_filenames)
+    save_imgs_to_disk(datapath + 'imgs/train/', x_train, x_train_filenames)
+    save_imgs_to_disk(datapath + 'imgs/test/', x_test, x_test_filenames)
 
     print("IMGS saved successfully")
 
     print("Saving the numpys to the disk..")
 
-    save_numpy_to_disk('./data/mnist/x_train.npy', x_train)
-    save_numpy_to_disk('./data/mnist/y_train.npy', y_train)
-    save_numpy_to_disk('./data/mnist/x_test.npy', x_test)
-    save_numpy_to_disk('./data/mnist/y_test.npy', y_test)
+    save_numpy_to_disk(datapath + 'x_train.npy', x_train)
+    save_numpy_to_disk(datapath + 'y_train.npy', y_train)
+    save_numpy_to_disk(datapath + 'x_test.npy', x_test)
+    save_numpy_to_disk(datapath + 'y_test.npy', y_test)
 
     print("Numpys saved successfully")
 
@@ -112,8 +114,8 @@ def main():
 
     print('saving tfrecord..')
 
-    save_tfrecord_to_disk('data/mnist/train.tfrecord', x_train, y_train)
-    save_tfrecord_to_disk('data/mnist/test.tfrecord', x_test, y_test)
+    save_tfrecord_to_disk(datapath + 'train.tfrecord', x_train, y_train)
+    save_tfrecord_to_disk(datapath + 'test.tfrecord', x_test, y_test)
 
     print('tfrecord saved successfully..')
 

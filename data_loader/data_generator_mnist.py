@@ -26,10 +26,10 @@ class BaselineMnistLoader:
     def __init__(self, config):
         self.config = config
 
-        self.x_train = np.load(config.x_train)
-        self.y_train = np.load(config.y_train)
-        self.x_test = np.load(config.x_test)
-        self.y_test = np.load(config.y_test)
+        self.x_train = np.load(config.datapath + config.x_train)
+        self.y_train = np.load(config.datapath + config.y_train)
+        self.x_test = np.load(config.datapath + config.x_test)
+        self.y_test = np.load(config.datapath + config.y_test)
 
         print("x_train shape: {} dtype: {}".format(self.x_train.shape, self.x_train.dtype))
         print("y_train shape: {} dtype: {}".format(self.y_train.shape, self.y_train.dtype))
@@ -43,7 +43,7 @@ class BaselineMnistLoader:
         self.num_iterations_test = self.len_x_test // self.config.batch_size
 
     def get_input(self):
-        x = tf.placeholder(tf.float32, [None, self.config.img_h, self.config.img_w])
+        x = tf.placeholder(tf.float32, [None, self.config.image_height, self.config.image_width])
         y = tf.placeholder(tf.int64, [None, ])
 
         return x, y
@@ -90,16 +90,16 @@ class MnistImgLoader:
         self.train_imgs_files = []
         self.test_imgs_files = []
 
-        with open(config.x_train_filenames, "rb") as f:
-            self.train_imgs_files = pickle.load(f)
+        with open(config.datapath + config.x_train_filenames, "rb") as f:
+            self.train_imgs_filenames = pickle.load(f)
 
-        with open(config.x_test_filenames, "rb") as f:
-            self.test_imgs_files = pickle.load(f)
+        with open(config.datapath + config.x_test_filenames, "rb") as f:
+            self.test_imgs_filenames = pickle.load(f)
 
-        self.train_labels = np.load(config.y_train)
-        self.test_labels = np.load(config.y_test)
+        self.train_labels = np.load(config.datapath + config.y_train)
+        self.test_labels = np.load(config.datapath + config.y_test)
 
-        self.imgs = tf.convert_to_tensor(self.train_imgs_files, dtype=tf.string)
+        self.imgs = tf.convert_to_tensor(self.train_imgs_filenames, dtype=tf.string)
 
         self.dataset = tf.data.Dataset.from_tensor_slices((self.imgs, self.train_labels))
         self.dataset = self.dataset.map(MnistImgLoader.parse_train, num_parallel_calls=self.config.batch_size)
@@ -111,14 +111,14 @@ class MnistImgLoader:
         self.training_init_op = self.iterator.make_initializer(self.dataset)
 
     @staticmethod
-    def parse_train(img_path, label):
+    def parse_train(img_filename, label):
         # load img
-        img = tf.read_file('data/cifar-100-python/' + img_path)
+        img = tf.read_file('data/mnist/imgs/train/' + img_filename)
         img = tf.image.decode_png(img, channels=3)
 
         return tf.cast(img, tf.float32), tf.cast(label, tf.int64)
 
-    def initialize(self, sess):
+    def initialize(self, sess, is_train):
         sess.run(self.training_init_op)
 
     def get_input(self):
@@ -134,7 +134,7 @@ class MnistTFRecord:
         self.config = config
 
         # initialize the dataset
-        self.dataset = tf.data.TFRecordDataset(self.config.tfrecord_data)
+        self.dataset = tf.data.TFRecordDataset(self.config.datapath + self.config.tfrecord_data)
         self.dataset = self.dataset.map(MnistTFRecord.parser, num_parallel_calls=self.config.batch_size)
         self.dataset = self.dataset.shuffle(1000)
         self.dataset = self.dataset.batch(self.config.batch_size)
@@ -175,7 +175,7 @@ class MnistDataLoaderNumpy:
     def __init__(self, config):
         self.config = config
 
-        with open(self.config.data_numpy_pkl, "rb") as f:
+        with open(self.config.datapath + self.config.data_numpy_pkl, "rb") as f:
             self.data_pkl = pickle.load(f)
 
         self.x_train = self.data_pkl['x_train']
@@ -237,39 +237,3 @@ class MnistDataLoaderNumpy:
 
     def get_input(self):
         return self.next_batch
-
-
-def main():
-    class Config:
-        data_numpy_pkl = "../data/cifar-100-python/data_numpy.pkl"
-        data_mode = "numpy"
-
-        image_height = 32
-        image_width = 32
-        batch_size = 8
-
-    tf.reset_default_graph()
-
-    sess = tf.Session()
-
-    data_loader = MnistDataLoaderNumpy(Config)
-
-    x, y = data_loader.next_batch
-
-    data_loader.initialize(sess, is_train=True)
-
-    out_x, out_y = sess.run([x, y])
-
-    print(out_x.shape, out_x.dtype)
-    print(out_y.shape, out_y.dtype)
-
-    data_loader.initialize(sess, is_train=False)
-
-    out_x, out_y = sess.run([x, y])
-
-    print(out_x.shape, out_x.dtype)
-    print(out_y.shape, out_y.dtype)
-
-
-if __name__ == '__main__':
-    main()

@@ -1,5 +1,6 @@
 {
-  "exp_name": "mnist",
+  "exp_name": "MnistImgLoader",
+  "datapath": "./data/mnist/",
 
   "image_height": 28,
   "image_width": 28,
@@ -11,6 +12,14 @@
 
   "max_to_keep": 2,
 
-  "data_loader": "Cifar100DataLoaderNumpy",
-  "data_numpy_pkl": "/media/kokomind/New Volume1/data/cifar/cifar-100-python/data_numpy.pkl"
+  "data_loader": "MnistImgLoader",
+  "data_numpy_pkl": "data_numpy.pkl",
+  "x_train_filenames": "x_train_filenames.pkl",
+  "x_test_filenames": "x_test_filenames.pkl",
+  "x_train": "x_train.npy",
+  "x_test": "x_test.npy",
+  "y_train": "y_train.npy",
+  "y_test": "y_test.npy",
+
+  "tfrecord_data": "train.tfrecord"
 }
