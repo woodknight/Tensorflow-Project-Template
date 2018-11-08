@@ -95,6 +95,9 @@ class MnistImgLoader:
 
         with open(config.datapath + config.x_test_filenames, "rb") as f:
             self.test_imgs_filenames = pickle.load(f)
+        
+        self.train_imgs_filenames = [self.config.datapath + 'imgs/train/' + x for x in self.train_imgs_filenames]
+        self.test_imgs_filenames = [self.config.datapath + 'imgs/test/' + x for x in self.test_imgs_filenames]
 
         self.train_labels = np.load(config.datapath + config.y_train)
         self.test_labels = np.load(config.datapath + config.y_test)
@@ -102,8 +105,8 @@ class MnistImgLoader:
         self.train_len = len(self.train_labels)
         self.test_len = len(self.test_labels)
 
-        self.num_iterations_train = (self.train_len + self.config.batch_size - 1) // self.config.batch_size
-        self.num_iterations_test = (self.test_len + self.config.batch_size - 1) // self.config.batch_size
+        self.num_iterations_train = self.train_len // self.config.batch_size
+        self.num_iterations_test = self.test_len // self.config.batch_size
 
         self.imgs = tf.convert_to_tensor(self.train_imgs_filenames, dtype=tf.string)
 
@@ -113,14 +116,14 @@ class MnistImgLoader:
         self.dataset = self.dataset.batch(self.config.batch_size)
         # self.dataset = self.dataset.repeat(1)
 
-        self.iterator = tf.data.Iterator.from_structure((tf.float32, tf.int64), ([None, 32, 32, 3], [None, ]))
+        self.iterator = tf.data.Iterator.from_structure((tf.float32, tf.int64), ([None, self.config.image_height, self.config.image_width, 1], [None, ]))
         self.training_init_op = self.iterator.make_initializer(self.dataset)
 
     @staticmethod
     def parse_train(img_filename, label):
         # load img
-        img = tf.read_file('data/mnist/imgs/train/' + img_filename)
-        img = tf.image.decode_png(img, channels=3)
+        img = tf.read_file(img_filename)
+        img = tf.image.decode_png(img)       
 
         return tf.cast(img, tf.float32), tf.cast(label, tf.int64)
 
