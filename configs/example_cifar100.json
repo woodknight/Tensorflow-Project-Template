@@ -12,5 +12,9 @@
   "max_to_keep": 2,
 
   "data_loader": "Cifar100DataLoaderNumpy",
-  "data_numpy_pkl": "./cifar-100-python/data_numpy.pkl"
+  "data_numpy_pkl": "./cifar-100-python/data_numpy.pkl",
+  "x_train_filenames": "./cifar-100-python/x_train_filenames.pkl",
+  "x_test_filenames": "./cifar-100-python/x_test_filenames.pkl",
+  "y_train": "./cifar-100-python/y_train.npy",
+  "y_test": "./cifar-100-python/y_test.npy"
 }

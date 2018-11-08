@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-from data_loader.cifar100 import Cifar100IMGLoader
+from data_loader.cifar100 import Cifar100DataLoaderNumpy
 from models.cifar_model import CifarModel
 from trainers.cifar_trainer import CifarTrainer
 
@@ -28,7 +28,7 @@ def main():
     sess = tf.Session()
 
     # create your data generator
-    data_loader = Cifar100IMGLoader(config)
+    data_loader = Cifar100DataLoaderNumpy(config)
 
     # create instance of the model you want
     model = CifarModel(data_loader, config)

@@ -113,12 +113,12 @@ class Cifar100IMGLoader:
     @staticmethod
     def parse_train(img_path, label):
         # load img
-        img = tf.read_file('data/cifar-100-python/' + img_path)
+        img = tf.read_file('./cifar-100-python/' + img_path)
         img = tf.image.decode_png(img, channels=3)
 
         return tf.cast(img, tf.float32), tf.cast(label, tf.int64)
 
-    def initialize(self, sess):
+    def initialize(self, sess, is_train):
         sess.run(self.training_init_op)
 
     def get_input(self):
@@ -214,6 +214,7 @@ class Cifar100DataLoaderNumpy:
             self.dataset = tf.data.Dataset.from_tensor_slices((self.features_placeholder, self.labels_placeholder))
             self.dataset = self.dataset.batch(self.config.batch_size)
 
+            # define a reinitializable iterator
             self.iterator = tf.data.Iterator.from_structure(self.dataset.output_types,
                                                             self.dataset.output_shapes)
 

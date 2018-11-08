@@ -111,3 +111,5 @@ data/cifar-100-python/
 .vscode/
 
 cifar-100-python/
+
+data/mnist/
