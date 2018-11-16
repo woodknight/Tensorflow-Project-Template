@@ -99,6 +99,8 @@ class MnistImgLoader:
         self.train_imgs_filenames = [self.config.datapath + 'imgs/train/' + x for x in self.train_imgs_filenames]
         self.test_imgs_filenames = [self.config.datapath + 'imgs/test/' + x for x in self.test_imgs_filenames]
 
+        #self.train_imgs_filenames = tf.data.Dataset.list_files(self.config.datapath + 'imgs/train/*.png')
+
         self.train_labels = np.load(config.datapath + config.y_train)
         self.test_labels = np.load(config.datapath + config.y_test)
 
@@ -111,8 +113,8 @@ class MnistImgLoader:
         self.imgs = tf.convert_to_tensor(self.train_imgs_filenames, dtype=tf.string)
 
         self.dataset = tf.data.Dataset.from_tensor_slices((self.imgs, self.train_labels))
-        self.dataset = self.dataset.map(MnistImgLoader.parse_train, num_parallel_calls=self.config.batch_size)
         self.dataset = self.dataset.shuffle(1000, reshuffle_each_iteration=False)
+        self.dataset = self.dataset.map(MnistImgLoader.parse_train, num_parallel_calls=self.config.batch_size)
         self.dataset = self.dataset.batch(self.config.batch_size)
         # self.dataset = self.dataset.repeat(1)
 

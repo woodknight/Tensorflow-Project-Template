@@ -3,5 +3,6 @@
     "python.jediEnabled": false,
     "files.exclude": {
         "**/imgs": true
-    }
+    },
+    "python.linting.pylintEnabled": true
 }

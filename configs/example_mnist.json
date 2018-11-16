@@ -1,5 +1,5 @@
 {
-  "exp_name": "MnistImgLoader",
+  "exp_name": "mnist",
   "datapath": "./data/mnist/",
 
   "image_height": 28,

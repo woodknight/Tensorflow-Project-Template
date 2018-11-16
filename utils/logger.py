@@ -22,7 +22,7 @@ class DefinedSummarizer:
 
         self.init_summary_ops()
 
-        self.summary_writer = tf.summary.FileWriter(summary_dir)
+        self.summary_writer = tf.summary.FileWriter(summary_dir, self.sess.graph)
 
     def set_summaries(self, scalar_tags=None, images_tags=None):
         self.scalar_tags = scalar_tags

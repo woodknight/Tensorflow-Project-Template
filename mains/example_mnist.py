@@ -1,4 +1,5 @@
 import tensorflow as tf
+from tensorflow.python import debug as tf_debug
 
 from data_loader.data_generator_mnist import MnistImgLoader
 from models.mnist_model import MnistModel
@@ -26,6 +27,8 @@ def main():
 
     # create tensorflow session
     sess = tf.Session()
+    # sess = tf_debug.TensorBoardDebugWrapperSession(sess, "Jiang-Ubuntu:6004")
+    #sess.run(my_fetches)
 
     # create your data generator
     data_loader = MnistImgLoader(config)
